@@ -21,6 +21,8 @@ from datetime import datetime
 import argparse
 import sys
 import json
+import os
+import base64
 
 # ---------------------------------------------------------------------------
 # Config
@@ -66,6 +68,7 @@ class Release:
     cover_url: str = ""
     tags: List[str] = field(default_factory=list)
     release_type: str = "LP"   # "LP" | "EP" | "Single"
+    spotify_fav: bool = False   # True if artist is in user's Spotify playlist
 
     @property
     def anticipation_score(self) -> int:
@@ -417,6 +420,71 @@ def filter_and_deduplicate(releases: List[Release]) -> List[Release]:
 
 
 # ---------------------------------------------------------------------------
+# .env loader (no extra dependencies needed)
+# ---------------------------------------------------------------------------
+def load_dotenv(path: str = ".env") -> None:
+    try:
+        with open(path) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+    except FileNotFoundError:
+        pass
+
+
+# ---------------------------------------------------------------------------
+# Spotify integration
+# ---------------------------------------------------------------------------
+def _spotify_access_token(client_id: str, client_secret: str, refresh_token: str) -> str:
+    creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
+    r = requests.post(
+        "https://accounts.spotify.com/api/token",
+        headers={"Authorization": f"Basic {creds}"},
+        data={"grant_type": "refresh_token", "refresh_token": refresh_token},
+        timeout=10,
+    )
+    r.raise_for_status()
+    return r.json()["access_token"]
+
+
+def load_spotify_artists(playlist_id: str) -> set:
+    """Return a set of normalised artist names from a Spotify playlist."""
+    client_id     = os.getenv("SPOTIFY_CLIENT_ID", "")
+    client_secret = os.getenv("SPOTIFY_CLIENT_SECRET", "")
+    refresh_token = os.getenv("SPOTIFY_REFRESH_TOKEN", "")
+
+    if not all([client_id, client_secret, refresh_token, playlist_id]):
+        return set()
+
+    try:
+        token = _spotify_access_token(client_id, client_secret, refresh_token)
+        headers = {"Authorization": f"Bearer {token}"}
+        artists: set = set()
+        url = (
+            f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+            f"?limit=100&fields=items(track(artists(name))),next"
+        )
+        while url:
+            resp = requests.get(url, headers=headers, timeout=10)
+            resp.raise_for_status()
+            data = resp.json()
+            for item in data.get("items", []):
+                track = item.get("track") or {}
+                for artist in track.get("artists", []):
+                    name = artist.get("name", "")
+                    if name:
+                        artists.add(_norm(name))
+            url = data.get("next")
+        print(f"[spotify] Loaded {len(artists)} artists from playlist")
+        return artists
+    except Exception as e:
+        print(f"[spotify] Warning: could not load playlist — {e}", file=sys.stderr)
+        return set()
+
+
+# ---------------------------------------------------------------------------
 # HTML report
 # ---------------------------------------------------------------------------
 HTML_TEMPLATE = """\
@@ -501,6 +569,9 @@ HTML_TEMPLATE = """\
   .chip:hover {{ border-color:#555; color:var(--text); }}
   .chip.active {{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }}
   .card.hidden {{ display:none; }}
+  .card.fav {{ border-color:#f4c430; box-shadow:0 0 0 1px #f4c43044; }}
+  .badge-fav {{ background:rgba(244,196,48,.18); color:#f4c430; }}
+  .fav-star {{ font-size:0.75rem; }}
 </style>
 </head>
 <body>
@@ -521,6 +592,7 @@ HTML_TEMPLATE = """\
   <button class="chip" onclick="filterType('LP',this)">LPs</button>
   <button class="chip" onclick="filterType('EP',this)">EPs</button>
   <button class="chip" onclick="filterType('Single',this)">Singles</button>
+  {fav_chip}
 </div>
 
 {sections}
@@ -530,8 +602,11 @@ let _typeFilter = 'all';
 
 function applyFilter() {{
   document.querySelectorAll('.card').forEach(card => {{
-    const match = _typeFilter === 'all' || card.dataset.type === _typeFilter;
-    card.parentElement.style.display = match ? '' : 'none';
+    const typeOk = _typeFilter === 'all' || _typeFilter === 'fav'
+                   ? true
+                   : card.dataset.type === _typeFilter;
+    const favOk  = _typeFilter !== 'fav' || card.dataset.fav === '1';
+    card.parentElement.style.display = (typeOk && favOk) ? '' : 'none';
   }});
 }}
 
@@ -563,6 +638,10 @@ def render_card(r: Release, rank: int, max_score: float, fill_class: str) -> str
     else:
         badge_cls, badge_label = "badge-both", "Both Sites"
 
+    fav_badge = '<span class="badge badge-fav fav-star">⭐ In Playlist</span>' if r.spotify_fav else ""
+    fav_cls   = " fav" if r.spotify_fav else ""
+    fav_attr  = ' data-fav="1"' if r.spotify_fav else ""
+
     score    = r.anticipation_score if fill_class == "fill-ant" else r.engagement_rate
     fill_pct = round(min((score / max_score * 100), 100)) if max_score > 0 else 0
 
@@ -588,13 +667,14 @@ def render_card(r: Release, rank: int, max_score: float, fill_class: str) -> str
 
     return (
         f'<a href="{r.url}" target="_blank" rel="noopener">'
-        f'<div class="card" data-type="{r.release_type}">'
+        f'<div class="card{fav_cls}" data-type="{r.release_type}"{fav_attr}>'
         f"{cover_html}"
         f'<div class="card-body">'
         f'<div class="card-top">'
         f'<span class="rank">#{rank}</span>'
         f'<span class="badge {badge_cls}">{badge_label}</span>'
         f"</div>"
+        f"{fav_badge}"
         f'<div class="card-artist">{r.artist or r.title}</div>'
         f'<div class="card-album">{r.album}</div>'
         f'<div class="card-genre">{(r.genre or "—")[:70]}{country_bit}</div>'
@@ -646,10 +726,17 @@ def generate_html(all_releases: List[Release], output_path: str) -> None:
         render_section(all_releases, lambda r: r.engagement_rate,    "fill-eng", "engagement"),
     ])
 
+    has_favs = any(r.spotify_fav for r in all_releases)
+    fav_chip = (
+        '<button class="chip" onclick="filterType(\'fav\',this)">⭐ In My Playlist</button>'
+        if has_favs else ""
+    )
+
     html = HTML_TEMPLATE.format(
         date=date_str,
         total=len(all_releases),
         sections=sections,
+        fav_chip=fav_chip,
     )
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
@@ -663,6 +750,9 @@ def main() -> None:
     # Ensure UTF-8 output on Windows
     if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+    # Load .env if present (local runs)
+    load_dotenv()
 
     parser = argparse.ArgumentParser(
         description="Scrape new music releases and generate a sorted HTML report."
@@ -689,6 +779,11 @@ def main() -> None:
         choices=["both", "alterportal", "coreradio"],
         help="Which sites to scrape (default: both)",
     )
+    parser.add_argument(
+        "--spotify-playlist", default="",
+        metavar="PLAYLIST_ID",
+        help="Spotify playlist ID to match artists against (or set SPOTIFY_PLAYLIST_ID env var)",
+    )
     args = parser.parse_args()
 
     all_releases: List[Release] = []
@@ -708,6 +803,17 @@ def main() -> None:
     if not all_releases:
         print("No releases remaining after filtering. Exiting.")
         sys.exit(1)
+
+    # Spotify favourite matching
+    playlist_id = args.spotify_playlist or os.getenv("SPOTIFY_PLAYLIST_ID", "")
+    if playlist_id:
+        spotify_artists = load_spotify_artists(playlist_id)
+        if spotify_artists:
+            for r in all_releases:
+                if _norm(r.artist) in spotify_artists:
+                    r.spotify_fav = True
+            favs = sum(1 for r in all_releases if r.spotify_fav)
+            print(f"[spotify] Marked {favs} releases as favourites")
 
     if args.json:
         with open(args.json, "w", encoding="utf-8") as f:
