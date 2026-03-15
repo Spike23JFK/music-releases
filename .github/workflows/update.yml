@@ -2,7 +2,7 @@ name: Update Music Releases
 
 on:
   schedule:
-    - cron: '0 8 * * *'   # runs every day at 08:00 UTC
+    - cron: '0 14 * * *'  # runs every day at 14:00 UTC (release Friday timing)
   workflow_dispatch:        # lets you trigger it manually from GitHub
 
 jobs:
