@@ -220,6 +220,8 @@ CORERADIO_RSS_FEEDS = [
     "https://coreradio.online/hardcore/rss.xml",
     "https://coreradio.online/progressive/rss.xml",
     "https://coreradio.online/electronic/rss.xml",
+    "https://coreradio.online/alternative/rss.xml",
+    "https://coreradio.online/deathcore/rss.xml",
 ]
 
 
