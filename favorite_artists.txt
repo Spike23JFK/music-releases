@@ -1,10 +1,877 @@
-# Favourite artists — one per line
-# Releases from these artists get a gold star on the page.
-# Lines starting with # are comments.
-#
-# Add your artists below:
-Hollywood Undead
-Bilmuri
+09
+10 Years
+21 Savage
+3 Feet Smaller
+3 Years Hollow
+32 Leaves
+36 Crazyfists
+A Breach of Silence
+A Broken Silence
+A Day To Remember
+A Lot Like Birds
+A Night Like This
+A Perfect Circle
+A Scent Like Wolves
+A Sense of Purpose
+A Tragic Setback
+A War Within
+Aaron Gillespie
+Abandoned By Bears
+Above, Below
+Acceptance
+ACCVSED
+Acres
+Act Zero
+Adam Ramey
+Adept
+Adestria
+Advents
+Affiance
+After Midnight Project
+After The Burial
+Afterdusk
+Afterglow
+Against The Current
+Aim For The Sunrise
+Akissforjersey
+Alaya
+Alazka
+Alda Sky
+Aleksandra Djelmas
+Aleksandra Radosavljevic
+ALESTI
+Alestorm
+Alicia Solombrino
+All That Remains
+All Time Low
+Alleviate
+Alpha Wolf
+alt-J
+Alter Bridge
+Ambleside
+American Sin
+Among the First
+Amorella
+Amoura
+Amy Lee
+Anberlin
+Anchorlines
+Andy Cizek
+Annisokay
+Anniversary
+Anup Sastry
+Any Given Day
+Aphyxion
+Aranda
+Arcane Haven
+Arcane Roots
+Architects
 Art Of Dying
+As A Conceit
+As December Falls
+As Everything Unfolds
+As I Lay Dying
+As The Structure Fails
+As Within, So Without
+ASHEN
+Asiaboy 禁藥王 & Lizi 栗子
+Asking Alexandria
+Assuming We Survive
+Atlas
+ATMOSPHRS
+August Burns Red
+AURAS
+Austin Visser
+Avera
+Aviana
+AVOID
+Avoid.
+Avril Lavigne
+Awake the Dreamer
+Awaken I Am
+BackWordz
+Bad Juju
+Bad Omens
+Bad/Love
+Barbie Sailers
+Bayharbour
+Beartooth
+Bebe Rexha
+Before I Turn
+Being As An Ocean
+Belle Haven
+Best Case Scenario
+Better Off
+Between You & Me
+Beyond Oceans
+Bilmuri
+Bishop Lamont
+Bleed From Within
+blessthefall
+Blindwish
+blink-182
+Blood Youth
+Bloodhound Gang
+Bloom
+Boston Manor
+Boundaries
+BOYS LIKE GIRLS
+Boys of Fall
+Brave Today
+Breakdown of Sanity
+Breakdowns At Tiffany's
+Breaking Benjamin
+Breaking the Cycle
+Breakthrough Even
+Breathe Atlantis
+Brendon Urie
+Brian Pearl
+Bright & Grey
+Bring Me The Horizon
+Broadside
+Broken Avenue
+Brooklane
+Bukowski
+Bullet For My Valentine
+Buried In Verona
+Bury My Regrets
+Bury Tomorrow
+Caleb Shomo
+Cane Hill
+Capsize
+Capstan
+Capture
+Capture The Crown
+Carcer City
+Casey
+Caskets
+Catalytic
+Catch Your Breath
+Cathercist
+Cathleen
+Caulfield
+Chaosbay
+CHILIØ
+Chiodos
+Chris Fronzak
+Chris Petrosino
+Chris Roetter
+Christian Lindskog
+Christopher Vernon
+Chunk! No, Captain Chunk!
+Circles
+Citizen
+CJ Gilpin
+Clara Fable
+Classic Jack
+Climates
+Clint Lowery
+Cold Black
+Cold Night For Alligators
+Cold Years
+coldrain
+Colour & Shade
+Common Vision
+CommonWealth
+Confessions of a Traitor
+Connor Hallisey
+Conspire
+Cory Wells
+Counterparts
+Court of Owls
+Courtney LaPlante
+Craig Mabbitt
+Crazy Town
+CrazyEightyEight
+Create To Inspire
+Crooked Royals
+Crooks UK
+Crossfade
+Crown The Empire
+Crystal Lake
+Current Comfort
+Currents
+Dakota Alvarez
+Dana Willax
+Dance Gavin Dance
+Danger Silent
+Dangerkids
+Dani Filth
+Dani Winter-Bates
+Darkenside
+Darkest Hour
+Daron Malakian
+Daughtry
+Dave Stephens
+David Brent
+David Hasselhoff
+David Maxim Micic
+Days in Divide
+Dayseeker
+Dayshell
+Dayshifter
+Daze of June
+Dead Days
+Dead Eyes
+Dead Heaven
+Dead Poetic
+DEADTHRONE
+Deaf Havana
+Dear Seattle
+Deez Nuts
+Defeat The Low
+Defects
+Defocus
+Demon Hunter
+Derek DiScanio
+Designer Disguise
+Destiny Potato
+Dev
+Device
+Devil Sold His Soul
+Devil You Know
+Digital Summer
+Diplo
+Discrepancies
+Disperse
+Disturbed
+Divisions
+Downpour
+Downswing
+Dream Drop
+Dream on Dreamer
+Dreamshade
+Dreamwake
+Drew York
+Driveways
+Dropout Kings
+Dusk of Us
+DVSR
+Dying Wish
+Earthists.
+Eat Your Heart Out
+Egypt Central
+Eidola
+Eldest 11
+Element Eighty
+elijah
+Elijah Witt
+Elitist
+Elyne
+Emarosa
+Eminem
+Emmy Mack
+Empty
+Emuness
+Engrave
+ENMY
+Enter Shikari
+ERRA
+Escape the Fate
+Everlast
+Everley
+Everrest
+Everway
+Everyday Sidekicks
+Everyone Dies In Utah
+Everything In Slow Motion
+Excision
+Execution Day
+Exist Immortal
+Exotype
+Falling In Reverse
+Fallstar
+Fame on Fire
+Fann
+Favorite Weapon
+Feed Her to the Sharks
+Fellsilent
+Fight The Fade
+Fire From The Gods
+First and Forever
+First Signs Of Frost
+Fit For A King
+Five Finger Death Punch
+Flaw
+Florent Salfati
+FLOYA
+Flux Conduct
+Follow My Lead
+For All I Am
+Forevermore
+Forgetting The Memories
+Forgotten Tears
+Four Nights Gone
+Four Year Strong
+Foxblood
+FOXCULT
+FreeHowling
+From Ashes to New
+From First To Last
+From Under the Willow
+Frontside
+Fronzilla
+Future Palace
+Gates
+Ghost Atlas
+Ghost//Signal
+Ghosts Again
+Glass Hands
+Glass Tides
+Gold Bloom
+Good Charlotte
+grandson
+Gutter King
+Hacktivist
+Half Me
+Hallow Point
+Halsey
+Hands Like Houses
+Haste The Day
+HAWK
+Headwreck
+Heart Of A Coward
+Heart Of Gold
+Heartist
+Heaven Shall Burn
+Heinrich Maneuver
+Helia
+Hellions
+Here's to Now
+Hevenshe
+High Down
+Highly Suspect
+Hillhaven
+Holding Absence
+Hollow Front
+Hollywood Undead
+Homebound
+Hoobastank
+Hope In Hand
+Hopes Die Last
+Hundred Suns
+HUNG
+I Am Zero
+I Prevail
+I Promised The World
+I See Stars
+I, Awake
+I'm an Astronaut
+Ian Fike
+Ian Kenny
+Ice Nine Kills
+Ice Sealed Eyes
+If I Were You
+If Not For Me
+ifa
+IMMERSE
+Imminence
+Immoral and Malevolent Happenings Metallic Ice
+Imposter OG Splatter Colorbomb
+Imposter Starburst w/ VHS Alt
+In Dying Arms
+In Good Nature
+In Hearts Wake
+In Her Own Words
+In Motive
+In This Moment
+In Urgency
+Inertia
+Inhale Exhale
+Intervals
+Invent Animate
+Islander
+Isotopes
+Issues
+It Prevails
+J.T. Cavey
+Jacob Charlton
+Jacoby Shaddix
+Jake Luhrs
+James Deberg
+Jamie Currie
+Jamie's Elsewhere
+Jarrad Salton
+Jarrod Alonge
+Jb Brubaker
+Jelly Roll
+Joachim Møller Jensen
+Joan Red
+Joel Heywood
+Joey Fleming
+Joey Keating
+Johari
+John Floreani
+John Henry
+John Wolfhooker
+Johnny Cash
+Joji
+Jon Mess
+Jonathan Vigil
+Joni Fatora
+Jonny Craig
+Jono Hawkey
+Kadinja
+Kala
+Kassim Auale
+Keep Close
+Keepsake
+Kellin Quinn
+Kendall Johns
+Kendrick Lamar
+Kid Bookie
+Kill The Lycan
+Killswitch Engage
+Kingdom Of Giants
+Knuckle Puck
+La Dispute
+Lacey Sturm
+Ladders on Tables
+Lajon Witherspoon
+landless
+LANDMVRKS
+Larry Ivy
+Late 9
+Lauren Babic
+LEAVE.
+Leonard Pennario
+Less Than Jake
+Letdown.
+LGND
+Lifespark.
+Light the Fire
+Light The Torch
+Light Up The Sky
+Lightscape
+Lightworker
+Like Moths To Flames
+Like Roses
+lil aaron
+Lil Dicky
+LIMBS
+Limp Bizkit
+Linkin Park
+Listener
+Lit
+Lizi Blanco
+Lø Spirit
+Locket
+LØLØ
+LONG/LAST
+Loose End
+Lost For Life
+Lost in Separation
+Love and Death
+Loveless
+Lucas Woodland
+Luna Falling
+M. Shadows
+Make Them Suffer
+Marcus Bridge
+Marcus Smaller
+Marcus Vik
+Maria Brink
+Mark Holcomb
+Marked As An Enemy
+Martin Cupka
+Matt Flood
+Matty Mullins
+Maxi Curnow
+Mayfield
+Mechina
+Melrose
+Memphis May Fire
+Mercenary
+mgk
+Michael Barr
+Michael LaBelle
+Michael McGough
+Mick Gordon
+Microwave
+Midfield
+Mike Dawes
+Mike Shinoda
+Millencolin
+Millington
+Mirrors
+Misery Signals
+Miss May I
+Modern Day Babylon
+Modern Day Escape
+Modern Echo
+Modern Error
+Moments
+MØNØDREAM
+Monuments
+Moose Blood
+More Than a Thousand
+Motivés
+Mountain Mover
+Movements
+MVSSIE
+My Enemies & I
+My Eyes Fall Victim
+My Ticket Home
+Napoleon
+Neck Deep
+Neema Askari
+Neon Graves
+Nerv
+Never Back Down
+Never Draw Back
+New Fiction
+Night Rider
+Nightwell
+Nik Nocturnal
+Nine Lashes
+Nine Shrines
+No Bragging Rights
+No Consequence
+No Eye Has Seen
+Noah Sebastian
+Noija
+Noiseast
+Norma Jean
+Normandie
+Northlane
+NOT ENOUGH
+nothing,nowhere.
+Notions
+Nova Twins
+Novallo
+Novelists
+NOVELISTS
+Now And On Earth
+Nowhere Left
+Obey The Brave
+Ocean Grove
+Ocean Sleeper
+Oceans Ate Alaska
+Of Mice & Men
+Of Reverie
+Of Virtue
+Off With Their Heads
+Oh/Villain
+Old Flame
+Oliver Blood
+Oliver Tree
+Olly Steele
+On Letting Go
+One Day As A Lion
+ONI
+Only Crime
+Only Liars
+Our Day Will Come
+Our Hollow, Our Home
+Our Last Night
+Our Mirage
+Our Promise
+Outer Glow
+Outline In Color
+P.O.D.
+Page Hamilton
+Painting Promises
+Paleface Swiss
+Palisades
+Palm Reader
+Panic! At The Disco
+Papa Roach
+Parachutes
+Parkway Drive
+Parkwood
+Parting Gift
+Patient Sixty-Seven
+Periphery
+Philip Strand
+Phinehas
+Picturesque
+Pillar
+Pink Guy
+Plini Roessler-Holgate
+Point North
+Polar
+Polaris
+Polyphia
+Post Malone
+PRESIDENT
+Pridelands
+Prime Circle
+Projected
+Promises Unsaid
+Propagandhi
+Protest The Hero
+Puddle Of Mudd
+PVRIS
+Ra
+Rage Against The Machine
+Rain City Drive
+Ravenface
+Ravenscode
+Ray Vavie
+Real Friends
+Red
+Red Helen
+Redeem/Revive
+Reliance
+Resolve
+Revoid
+Reznik
+Ricky Armellino
+Righteous Vendetta
+Rise Against
+Rising Insane
+Rival
+RIVIẼRE
+Robert Ljung
+Rogue
+Rory Rodriguez
+Rosaline
+Rose Villain
+Rou Reynolds
+Royals
+Rumours
+Run The Jewels
+Ryo
+Ryo Kinoshita
+Saint Asonia
+Sal3m
+Salem
+Sam Carter
+Saosin
+Savage Hands
+Save The Clock Tower
+Saving Face
+Saviour
+Scampi
+Scar The Martyr
+Sea in the Sky
+Sean Midson
+Seasons After
+Secret Eyes
+Secret Keeper
+Secrets
+Seether
+SENNA
+Senses Fail
+Sent By Ravens
+Sentient
+Seraphim
+Sergei Rachmaninoff
+Sevendust
+Shallowheart
+Shaping the Legacy
+Shinedown
+Shokran
+Shreddy Krueger
+Shrezzers
 Siamese
-Blood Command
+Sid Menon
+Sienna Skies
+Signs of Betrayal
+Silent Circus
+Silent Civilian
+Silent Planet
+Silent Screams
+Silent Season
+Silvercord
+Silverstein
+Simon Neil
+Simple Plan
+SION
+Skies Collide
+Skyharbor
+Skywalker
+SLAVES
+Sleep On It
+Sleep Talk
+Sleep Token
+Sleeping With Sirens
+Sleepshaker
+Smile Empty Soul
+Softspoken
+Soilwork
+Solence
+SOUNDR
+South Haven
+Space Of Variations
+Speech Patterns
+Spiritbox
+Spoken
+Staind
+STAKE
+Stands With Fists
+Stargazer
+STARSET
+State Champs
+Stefan Eberl
+Stephen Swartz
+Stepson
+Stevie T
+Stick To Your Guns
+Stone Lions
+Stonehand
+Stories
+Story Of The Year
+Straight Shot Home
+Stray View
+Structures
+Submersed
+Sufferer
+Sunset
+Surroundings
+Sylar
+Synge
+Take The Name
+Tanooki Suit
+Tanuki
+Tapestry
+Telle Smith
+ten56.
+Tenacious D
+TesseracT
+Texas In July
+Textures
+The Alchemy Index
+The Amity Affliction
+The Artificials
+The Bad Chapter
+The Bottom Line
+The Brave
+The Chats
+The Classic Crime
+The Color Morale
+The Comfort
+The Contortionist
+The Danger Of Falling
+The Dangerous Summer
+The Darkest Moment
+The Devil Wears Prada
+The Distant North
+The Drake Equation
+The Elijah
+The End At The Beginning
+The Family Ruin
+The Five Hundred
+The Ghost Inside
+The Gospel Youth
+The Home Team
+The Luminary
+The Maine
+The March Ahead
+The Narrator
+The New Age
+The Nixon Rodeo
+The Northern
+The Ocean
+The Offspring
+The Oklahoma Kid
+The One Hundred
+The Overseer
+The Plot In You
+The Red Jumpsuit Apparatus
+The Room Colored Charlatan
+The Sorrow
+The Story So Far
+The Tony Danza Tapdance Extravaganza
+The Used
+The White Noise
+The Wise Man's Fear
+The Wonder Years
+The Word Alive
+TheCityIsOurs
+This Or The Apocalypse
+Thornhill
+Those Without
+Thousand Below
+Thousand Foot Krutch
+Three Days Grace
+Thrice
+Thursday
+Tidelines
+Till Lindemann
+Tim Henson
+Times Of Grace
+Timo Bonner
+TIRED EYES
+To Kill Achilles
+To The Wind
+Tom Vanderkam
+Tom Weaver
+Toothgrinder
+Trade Wind
+Transit
+Trash Boat
+Traveller
+Travis Barker
+Tremonti
+Trivium
+Trophy Eyes
+Tyler Carter
+Under The Flood
+Underoath
+Uneven Structure
+Unprocessed
+Until I Wake
+Upon the Water
+Vagrants
+Valis Ablaze
+Vanna
+Vaultry
+Veil Of Maya
+Vespera
+Vesta Collide
+VEXED
+Vilamoura
+Villa Morta
+Villain of the Story
+Voices
+Voices From The Fuselage
+Volumes
+Wage War
+Watch It Burn
+Watch Out Stampede
+Waxflower
+We As Human
+We Blame The Empire
+We Came As Romans
+We Gave It Hell
+We Set Signals
+We The Kings
+Wearing Scars
+Weigh the Anchor
+Weightless
+Westhand
+What Haunts You
+What Lies Below
+Wheninrome
+Whether, I
+While She Sleeps
+While the Heart Becomes
+White Gold
+Whitechapel
+Wildheart
+Wind Walkers
+Windmills
+Windwaker
+Wings Denied
+With Empty Hands
+Wither Away
+Within Destruction
+Woe, Is Me
+Wolves At The Gate
+Wooli
+Wovenwar
+Wow That's What I Call Metalcore
+Write This Down
+Written by Wolves
+WSTR
+X Ambassadors
+Y.O.U
+You vs Yesterday
+Young Lions
+Your Memorial
+Yours Truly
+Youth Fountain
+Zach Britt
+Zephyr
+Zero 9:36
