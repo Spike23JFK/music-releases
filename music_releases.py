@@ -212,25 +212,27 @@ def scrape_alterportal(max_releases: int = DEFAULT_MAX, pages: int = 1) -> List[
 # ---------------------------------------------------------------------------
 # coreradio.online scraper  (RSS-based — bypasses Cloudflare bot blocking)
 # ---------------------------------------------------------------------------
-def scrape_coreradio(max_releases: int = DEFAULT_MAX) -> List[Release]:
-    print("[coreradio.online] Fetching RSS feed...")
-    try:
-        r = _session.get("https://coreradio.online/rss.xml", timeout=TIMEOUT)
-        r.raise_for_status()
-    except Exception as e:
-        print(f"  [warn] coreradio RSS fetch failed: {e}", file=sys.stderr)
-        return []
+CORERADIO_RSS_FEEDS = [
+    "https://coreradio.online/rss.xml",
+    "https://coreradio.online/metalcore/rss.xml",
+    "https://coreradio.online/singles/rss.xml",
+    "https://coreradio.online/post-hardcore/rss.xml",
+    "https://coreradio.online/hardcore/rss.xml",
+    "https://coreradio.online/progressive/rss.xml",
+    "https://coreradio.online/electronic/rss.xml",
+]
 
+
+def _parse_coreradio_rss(content: bytes) -> List[Release]:
+    """Parse a single coreradio RSS feed and return releases."""
     try:
-        root = ET.fromstring(r.content)
+        root = ET.fromstring(content)
     except ET.ParseError as e:
         print(f"  [warn] coreradio RSS parse error: {e}", file=sys.stderr)
         return []
 
     releases: List[Release] = []
     for item in root.iter("item"):
-        if len(releases) >= max_releases:
-            break
         try:
             raw_title = (item.findtext("title") or "").strip()
             link = (item.findtext("link") or "").strip()
@@ -299,6 +301,28 @@ def scrape_coreradio(max_releases: int = DEFAULT_MAX) -> List[Release]:
         except Exception as e:
             print(f"  [warn] coreradio RSS item parse error: {e}", file=sys.stderr)
 
+    return releases
+
+
+def scrape_coreradio(max_releases: int = DEFAULT_MAX) -> List[Release]:
+    print("[coreradio.online] Fetching RSS feeds...")
+    seen_urls: set = set()
+    releases: List[Release] = []
+
+    for feed_url in CORERADIO_RSS_FEEDS:
+        try:
+            r = _session.get(feed_url, timeout=TIMEOUT)
+            r.raise_for_status()
+        except Exception as e:
+            print(f"  [warn] RSS fetch failed: {feed_url} — {e}", file=sys.stderr)
+            continue
+
+        for rel in _parse_coreradio_rss(r.content):
+            if rel.url not in seen_urls:
+                seen_urls.add(rel.url)
+                releases.append(rel)
+
+    releases = releases[:max_releases]
     print(f"[coreradio.online] Got {len(releases)} releases from RSS")
     return releases
 
