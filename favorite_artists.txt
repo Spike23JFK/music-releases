@@ -1,0 +1,10 @@
+# Favourite artists — one per line
+# Releases from these artists get a gold star on the page.
+# Lines starting with # are comments.
+#
+# Add your artists below:
+Hollywood Undead
+Bilmuri
+Art Of Dying
+Siamese
+Blood Command

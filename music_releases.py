@@ -22,7 +22,6 @@ import argparse
 import sys
 import json
 import os
-import base64
 
 # ---------------------------------------------------------------------------
 # Config
@@ -419,68 +418,25 @@ def filter_and_deduplicate(releases: List[Release]) -> List[Release]:
     return result
 
 
+
 # ---------------------------------------------------------------------------
-# .env loader (no extra dependencies needed)
+# Favourite artists (loaded from a text file, one artist per line)
 # ---------------------------------------------------------------------------
-def load_dotenv(path: str = ".env") -> None:
+def load_favourite_artists(path: str = "") -> set:
+    """Return a set of normalised artist names from a text file."""
+    if not path:
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "favorite_artists.txt")
     try:
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
+            artists = set()
             for line in f:
                 line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    k, v = line.split("=", 1)
-                    os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+                if line and not line.startswith("#"):
+                    artists.add(_norm(line))
+            print(f"[favs] Loaded {len(artists)} favourite artists from {path}")
+            return artists
     except FileNotFoundError:
-        pass
-
-
-# ---------------------------------------------------------------------------
-# Spotify integration
-# ---------------------------------------------------------------------------
-def _spotify_access_token(client_id: str, client_secret: str, refresh_token: str) -> str:
-    creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
-    r = requests.post(
-        "https://accounts.spotify.com/api/token",
-        headers={"Authorization": f"Basic {creds}"},
-        data={"grant_type": "refresh_token", "refresh_token": refresh_token},
-        timeout=10,
-    )
-    r.raise_for_status()
-    return r.json()["access_token"]
-
-
-def load_spotify_artists(playlist_id: str) -> set:
-    """Return a set of normalised artist names from a Spotify playlist."""
-    client_id     = os.getenv("SPOTIFY_CLIENT_ID", "")
-    client_secret = os.getenv("SPOTIFY_CLIENT_SECRET", "")
-    refresh_token = os.getenv("SPOTIFY_REFRESH_TOKEN", "")
-
-    if not all([client_id, client_secret, refresh_token, playlist_id]):
-        return set()
-
-    try:
-        token = _spotify_access_token(client_id, client_secret, refresh_token)
-        headers = {"Authorization": f"Bearer {token}"}
-        artists: set = set()
-        url = (
-            f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
-            f"?limit=100&fields=items(track(artists(name))),next"
-        )
-        while url:
-            resp = requests.get(url, headers=headers, timeout=10)
-            resp.raise_for_status()
-            data = resp.json()
-            for item in data.get("items", []):
-                track = item.get("track") or {}
-                for artist in track.get("artists", []):
-                    name = artist.get("name", "")
-                    if name:
-                        artists.add(_norm(name))
-            url = data.get("next")
-        print(f"[spotify] Loaded {len(artists)} artists from playlist")
-        return artists
-    except Exception as e:
-        print(f"[spotify] Warning: could not load playlist — {e}", file=sys.stderr)
         return set()
 
 
@@ -751,9 +707,6 @@ def main() -> None:
     if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-    # Load .env if present (local runs)
-    load_dotenv()
-
     parser = argparse.ArgumentParser(
         description="Scrape new music releases and generate a sorted HTML report."
     )
@@ -780,9 +733,9 @@ def main() -> None:
         help="Which sites to scrape (default: both)",
     )
     parser.add_argument(
-        "--spotify-playlist", default="",
-        metavar="PLAYLIST_ID",
-        help="Spotify playlist ID to match artists against (or set SPOTIFY_PLAYLIST_ID env var)",
+        "--fav-artists", default="",
+        metavar="FILE",
+        help="Path to text file with favourite artist names (one per line)",
     )
     args = parser.parse_args()
 
@@ -804,16 +757,14 @@ def main() -> None:
         print("No releases remaining after filtering. Exiting.")
         sys.exit(1)
 
-    # Spotify favourite matching
-    playlist_id = args.spotify_playlist or os.getenv("SPOTIFY_PLAYLIST_ID", "")
-    if playlist_id:
-        spotify_artists = load_spotify_artists(playlist_id)
-        if spotify_artists:
-            for r in all_releases:
-                if _norm(r.artist) in spotify_artists:
-                    r.spotify_fav = True
-            favs = sum(1 for r in all_releases if r.spotify_fav)
-            print(f"[spotify] Marked {favs} releases as favourites")
+    # Favourite artist matching
+    fav_artists = load_favourite_artists(args.fav_artists)
+    if fav_artists:
+        for r in all_releases:
+            if _norm(r.artist) in fav_artists:
+                r.spotify_fav = True
+        favs = sum(1 for r in all_releases if r.spotify_fav)
+        print(f"[favs] Marked {favs} releases as favourites")
 
     if args.json:
         with open(args.json, "w", encoding="utf-8") as f:
