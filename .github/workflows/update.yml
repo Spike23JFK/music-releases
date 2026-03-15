@@ -23,7 +23,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run scraper
-        run: python music_releases.py --output index.html
+        run: python music_releases.py --output index.html --max 100
 
       - name: Commit and push updated report
         run: |
