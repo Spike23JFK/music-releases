@@ -729,9 +729,9 @@ def main() -> None:
         help="Also save raw data as JSON",
     )
     parser.add_argument(
-        "--sites", default="both",
+        "--sites", default="alterportal",
         choices=["both", "alterportal", "coreradio"],
-        help="Which sites to scrape (default: both)",
+        help="Which sites to scrape (default: alterportal)",
     )
     parser.add_argument(
         "--fav-artists", default="",
