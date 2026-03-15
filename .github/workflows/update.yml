@@ -22,6 +22,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Test coreradio RSS access
+        run: |
+          echo "--- Testing coreradio RSS ---"
+          curl -s -o /tmp/rss_test.txt -w "HTTP %{http_code} | Size: %{size_download} bytes\n" \
+            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+            https://coreradio.online/rss.xml
+          head -3 /tmp/rss_test.txt
+
       - name: Run scraper
         run: python music_releases.py --output index.html --max 100
 
