@@ -45,6 +45,8 @@ BLOCKED_GENRES = [
     "thrash metal",
     "death metal",
     "black metal",
+    "female vocal",
+    "gothic metal",
 ]
 
 
