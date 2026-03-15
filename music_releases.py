@@ -22,6 +22,7 @@ import argparse
 import sys
 import json
 import os
+import xml.etree.ElementTree as ET
 
 # ---------------------------------------------------------------------------
 # Config
@@ -209,122 +210,96 @@ def scrape_alterportal(max_releases: int = DEFAULT_MAX, pages: int = 1) -> List[
 
 
 # ---------------------------------------------------------------------------
-# coreradio.online scraper
+# coreradio.online scraper  (RSS-based — bypasses Cloudflare bot blocking)
 # ---------------------------------------------------------------------------
-def parse_coreradio_detail(url: str) -> Optional[Release]:
-    soup = fetch(url)
-    if not soup:
-        return None
-    try:
-        # Title from <title>
-        raw_title = soup.title.get_text(strip=True)
-        raw_title = re.sub(r"\s*»\s*CORE RADIO.*$", "", raw_title).strip()
-        m = re.match(r"^(.+?)\s*[-–]\s*(.+?)\s*\((\d{4})\)\s*$", raw_title)
-        artist = m.group(1).strip() if m else raw_title
-        album  = m.group(2).strip() if m else ""
-        year   = m.group(3)         if m else ""
-
-        # Genre, country, quality from info block
-        info = soup.select_one(".full-news-info")
-        info_text = info.get_text("\n") if info else ""
-        genre_m   = re.search(r"Genre:\s*(.+)",   info_text)
-        country_m = re.search(r"Country:\s*(.+)", info_text)
-        quality_m = re.search(r"Quality:\s*(.+)", info_text)
-        genre   = genre_m.group(1).strip()   if genre_m   else ""
-        country = country_m.group(1).strip() if country_m else ""
-        fmt     = quality_m.group(1).strip() if quality_m else ""
-
-        # Cover from og:image or first image in left column
-        og_img = soup.find("meta", property="og:image")
-        cover_url = og_img["content"] if og_img and og_img.get("content") else ""
-        if not cover_url:
-            img = soup.select_one(".full-news-left img")
-            cover_url = img.get("src", "") if img else ""
-
-        # Views from .fullo-news-line (the stats line below the release)
-        fullo = soup.select_one(".fullo-news-line")
-        views = 0
-        date_str = ""
-        if fullo:
-            fullo_text = fullo.get_text(" ", strip=True)
-            nums = re.findall(r"[\d][\d\s]*", fullo_text)
-            if nums:
-                views = parse_int(nums[0])
-            date_m = re.search(
-                r"(January|February|March|April|May|June|July|August"
-                r"|September|October|November|December)\s+\d+,\s+\d{4}",
-                fullo_text,
-            )
-            date_str = date_m.group(0) if date_m else ""
-
-        # Comment count — count comment wrapper elements
-        comments = 0
-        for sel in (".fi", ".comment-item", "[id^='comment-id-']"):
-            n = len(soup.select(sel))
-            if n > comments:
-                comments = n
-
-        return Release(
-            title=raw_title,
-            artist=artist,
-            album=album,
-            year=year,
-            source="coreradio",
-            url=url,
-            genre=genre,
-            country=country,
-            fmt=fmt,
-            views=views,
-            comments=comments,
-            date_str=date_str,
-            cover_url=cover_url,
-        )
-    except Exception as e:
-        print(f"  [warn] coreradio detail parse error {url}: {e}", file=sys.stderr)
-        return None
-
-
 def scrape_coreradio(max_releases: int = DEFAULT_MAX) -> List[Release]:
-    print("[coreradio.online] Fetching main page...")
-    soup = fetch("https://coreradio.online/")
-    if not soup:
+    print("[coreradio.online] Fetching RSS feed...")
+    try:
+        r = _session.get("https://coreradio.online/rss.xml", timeout=TIMEOUT)
+        r.raise_for_status()
+    except Exception as e:
+        print(f"  [warn] coreradio RSS fetch failed: {e}", file=sys.stderr)
         return []
 
-    # Collect unique release URLs — pattern /{genre}/{id}-{slug}-{year}
-    seen: set = set()
-    release_urls: List[str] = []
-    release_re = re.compile(
-        r"https://coreradio\.online/[a-z0-9-]+/\d+-[a-z0-9-]+-\d{4}$"
-    )
-    for a in soup.select("a[href]"):
-        href = a.get("href", "")
-        if release_re.match(href) and href not in seen:
-            seen.add(href)
-            release_urls.append(href)
-
-    release_urls = release_urls[:max_releases]
-    print(
-        f"[coreradio.online] Found {len(release_urls)} release URLs, "
-        f"fetching detail pages..."
-    )
+    try:
+        root = ET.fromstring(r.content)
+    except ET.ParseError as e:
+        print(f"  [warn] coreradio RSS parse error: {e}", file=sys.stderr)
+        return []
 
     releases: List[Release] = []
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(parse_coreradio_detail, url): url
-            for url in release_urls
-        }
-        total = len(futures)
-        done = 0
-        for future in as_completed(futures):
-            result = future.result()
-            done += 1
-            print(f"  [{done}/{total}] fetched", end="\r", flush=True)
-            if result:
-                releases.append(result)
-    print()
+    for item in root.iter("item"):
+        if len(releases) >= max_releases:
+            break
+        try:
+            raw_title = (item.findtext("title") or "").strip()
+            link = (item.findtext("link") or "").strip()
+            if not raw_title or not link:
+                continue
 
-    print(f"[coreradio.online] Got {len(releases)} releases")
+            # Parse "Artist - Album (Year)"
+            m = re.match(r"^(.+?)\s*[-–]\s*(.+?)\s*\((\d{4})\)\s*$", raw_title)
+            artist = m.group(1).strip() if m else raw_title
+            album  = m.group(2).strip() if m else ""
+            year   = m.group(3)         if m else ""
+
+            # Parse <description> HTML for genre, country, format, cover
+            desc_html = item.findtext("description") or ""
+            desc_soup = BeautifulSoup(desc_html, "html.parser")
+
+            # Cover image
+            img = desc_soup.find("img")
+            cover_url = img.get("src", "") if img else ""
+
+            # Genre from links like /xfsearch/genre/Metalcore/
+            genre_links = desc_soup.find_all("a", href=re.compile(r"/xfsearch/genre/"))
+            genre = " / ".join(a.get_text(strip=True) for a in genre_links)
+
+            # Country and format from remaining text lines
+            text_parts = desc_soup.get_text("\n").strip().split("\n")
+            country = ""
+            fmt = ""
+            for part in text_parts:
+                part = part.strip()
+                if not part:
+                    continue
+                if "/xfsearch/" in part or part == raw_title:
+                    continue
+                if re.search(r"MP3|FLAC|kbps", part, re.IGNORECASE):
+                    fmt = part
+                elif re.match(r"^[A-Z][a-zA-Z\s]+$", part) and len(part) < 40:
+                    country = part
+
+            # Date from <pubDate>
+            pub_date = (item.findtext("pubDate") or "").strip()
+            date_str = ""
+            if pub_date:
+                try:
+                    from email.utils import parsedate_to_datetime
+                    dt = parsedate_to_datetime(pub_date)
+                    date_str = dt.strftime("%B %d, %Y")
+                except Exception:
+                    date_str = pub_date
+
+            releases.append(Release(
+                title=raw_title,
+                artist=artist,
+                album=album,
+                year=year,
+                source="coreradio",
+                url=link,
+                genre=genre,
+                country=country,
+                fmt=fmt,
+                views=0,
+                comments=0,
+                date_str=date_str,
+                cover_url=cover_url,
+            ))
+        except Exception as e:
+            print(f"  [warn] coreradio RSS item parse error: {e}", file=sys.stderr)
+
+    print(f"[coreradio.online] Got {len(releases)} releases from RSS")
     return releases
 
 
